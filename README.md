@@ -3,6 +3,7 @@
 Extension a basic set of columns of Yii grid. Allows you to organize interactive editing data inside the grid.
 The new values ​​will be sent to the server using Ajax.
 At the moment includes:
+
  * phaSelectColumn - column, which will allow the new data from a predefined list of values.
  * phaСheckColumn - using this column you will be switched the state between two value.
 
@@ -11,6 +12,7 @@ At the moment includes:
 1. Extract the release file under <tt>protected/extensions/phaActiveColumn</tt>.
 2. Add to your config file:
  * in import section:
+
 	...
 	'application.extensions.phaActiveColumn.*',
 	...
