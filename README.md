@@ -1,6 +1,6 @@
 ﻿phaActiveColumn
 ======================================
-Extending a basic set of columns of grid. Allows you to organize interactive editing data inside the grid.
+Extension a basic set of columns of Yii grid. Allows you to organize interactive editing data inside the grid.
 The new values ​​will be sent to the server using Ajax.
 At the moment includes:
  * phaSelectColumn - column, which will allow the new data from a predefined list of values.
@@ -29,6 +29,26 @@ Consider the different properties:
  * itemName - The name of the attribute that contains the value to uniquely identify which element has been changed. By default it's "name";
  * actionUrl - URL for update action. On this URL will be sent call to update value. If this value is string - 
    value will be used as is. If it's array - will be called [CHtml::normalizeUrl](http://www.yiiframework.com/doc/api/1.1/CHtml#normalizeUrl-detail).
+
+#### phaSelectColumn Example
+
+For example, consider building an interactive grid to edit a list of cities and time zones for this cities:
+
+    $this->widget('zii.widgets.grid.CGridView', array(
+        'dataProvider'=>$dataProvider,
+        'columns'=>array(
+            ...........
+            array (
+                'class' => 'phaSelectColumn',
+                'header' => 'Time Zone',
+                'name' => 'time_zone_id',
+                'data' => CHtml::listData(TimeZones::model()->findAll(), 'id', 'name'),
+                'itemName' => 'id',
+                'actionUrl' => array('setTimeZone'),
+            ),
+            ...........
+        ),
+    ));
 
 ## Author
 
