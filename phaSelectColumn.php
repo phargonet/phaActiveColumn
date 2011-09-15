@@ -28,12 +28,6 @@ class phaSelectColumn extends CDataColumn {
     public $modelId = 'id';
 
     /**
-     * @var string The name of the attribute that contains the value to uniquely identify
-     * which element has been changed. By default it's "name"
-     */
-    public $itemName = 'name';
-
-    /**
      * @var mixed URL for update action. On this URL will be sent call to update value.
      *      If this value is string - value will be used as is.
      *      If it's array - will be called {@link CHtml::normalizeUrl}
@@ -49,6 +43,7 @@ class phaSelectColumn extends CDataColumn {
      */
     protected function renderDataCellContent($row,$data) {
         $value = CHtml::value($data,$this->modelId);
+        $this->selectBoxHtmlOptions['itemId'] = $data->{$this->modelId};
 
         echo CHtml::dropDownList(
             $this->name.'['.$value.']',
@@ -82,7 +77,7 @@ class phaSelectColumn extends CDataColumn {
             cache: false,
             url: "' . (is_array($this->actionUrl) ? CHtml::normalizeUrl( $this->actionUrl ) : $this->actionUrl) . '",
             data: {
-                item: $(this).attr("' . $this->itemName . '"),
+                item: $(this).attr("itemId"),
                 value:$("option:selected",this).val()
             },
             success: function(data){
