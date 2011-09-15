@@ -51,6 +51,7 @@ For example, consider building an interactive grid to edit a list of cities and 
 
 After changing any values ​​will be send a POST request, containing:
 
+
  * item - unique identifier of model
  * value - selected value
 
@@ -78,6 +79,7 @@ For example, consider building an interactive grid to activate same item:
     ));
 
 After changing any values ​​will be send a POST request, containing:
+
 
  * item - unique identifier of model
  * checked - 1 (if box is checked) or 0 (in another case).
