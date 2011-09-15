@@ -51,7 +51,6 @@ For example, consider building an interactive grid to edit a list of cities and 
 
 After changing any values ​​will be send a POST request, containing:
 
-
  * item - unique identifier of model
  * value - selected value
 
