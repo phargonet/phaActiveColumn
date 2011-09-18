@@ -7,10 +7,7 @@
  * @copyright Copyright &copy; 2011 phArgo Software
  * @license GPL & MIT
  */
-
-Yii::import('zii.widgets.grid.CDataColumn');
-
-class phaCheckColumn extends CDataColumn {
+class phaCheckColumn extends phaAbsActiveColumn {
 
     /**
      * @var array Additional HTML attributes. See details {@link CHtml::checkBox}
@@ -21,18 +18,6 @@ class phaCheckColumn extends CDataColumn {
      * @var mixed The value used to determine the check state
      */
     public $checkedValue = 1;
-
-    /**
-     * @var mixed URL for update action. On this URL will be sent call to update value.
-     *      If this value is string - value will be used as is.
-     *      If it's array - will be called {@link CHtml::normalizeUrl}
-     */
-    public $actionUrl = array('.');
-
-    /**
-     * @var string name of models key
-     */
-    public $modelId = 'id';
 
     /**
      * Renders the data cell content.
@@ -73,7 +58,7 @@ class phaCheckColumn extends CDataColumn {
             type: "POST",
             dataType: "json",
             cache: false,
-            url: "' . (is_array($this->actionUrl) ? CHtml::normalizeUrl( $this->actionUrl ) : $this->actionUrl) . '",
+            url: "' . $this->buildActionUrl() . '",
             data: {
                 item: $(this).attr("itemid"),
                 checked: $(this).attr("checked")?1:0

@@ -7,10 +7,7 @@
  * @copyright Copyright &copy; 2011 phArgo Software
  * @license GPL & MIT
  */
-
-Yii::import('zii.widgets.grid.CDataColumn');
-
-class phaSelectColumn extends CDataColumn {
+class phaSelectColumn extends phaAbsActiveColumn {
 
     /**
      * @var array the HTML options for the checkboxes.
@@ -21,18 +18,6 @@ class phaSelectColumn extends CDataColumn {
      * @var array the data for generate a drop down list
      */
     public $data = array();
-
-    /**
-     * @var string name of models key
-     */
-    public $modelId = 'id';
-
-    /**
-     * @var mixed URL for update action. On this URL will be sent call to update value.
-     *      If this value is string - value will be used as is.
-     *      If it's array - will be called {@link CHtml::normalizeUrl}
-     */
-    public $actionUrl = array('.');
 
     /**
      * Renders the data cell content.
@@ -75,7 +60,7 @@ class phaSelectColumn extends CDataColumn {
             type: "POST",
             dataType: "json",
             cache: false,
-            url: "' . (is_array($this->actionUrl) ? CHtml::normalizeUrl( $this->actionUrl ) : $this->actionUrl) . '",
+            url: "' . $this->buildActionUrl() . '",
             data: {
                 item: $(this).attr("itemId"),
                 value:$("option:selected",this).val()

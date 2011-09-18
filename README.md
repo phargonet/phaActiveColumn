@@ -23,7 +23,7 @@ Now in your template you can use the new column.
 ### phaSelectColumn 
 
 Because the column type phaSelectColumn is inherited from [CDataColumn](http://www.yiiframework.com/doc/api/1.1/CDataColumn) and 
-[CGridColumn](http://www.yiiframework.com/doc/api/1.1/CGridColumn), it includes entire set of of properties and methods of base classes.
+[CGridColumn](http://www.yiiframework.com/doc/api/1.1/CGridColumn), it includes entire set of properties and methods of base classes.
 Consider the different properties:
  * data - data to build the drop-down list an array {id => name};
  * modelId - name of models key. By default it's "id";
