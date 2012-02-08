@@ -15,6 +15,11 @@ class phaEditColumn extends phaAbsActiveColumn {
     public $htmlEditFieldOptions = array();
 
     /**
+     * @var array Additional HTML attributes for decoration .
+     */
+    public $htmlEditDecorationOptions = array();
+
+    /**
      * Renders the data cell content.
      * This method evaluates {@link value} or {@link name} and renders the result.
      *
@@ -31,7 +36,7 @@ class phaEditColumn extends phaAbsActiveColumn {
         echo CHtml::tag('div', array(
             'valueid' => $valueId,
             'id' => $fieldUID.'-'.$valueId,
-            'class' => $fieldUID
+            'class' => $fieldUID,
         ), $value);
 
         echo CHtml::openTag('div', array(
@@ -67,6 +72,7 @@ class phaEditColumn extends phaAbsActiveColumn {
         $cs=Yii::app()->getClientScript();
 
         $liveClick ='
+        phaACActionUrls["'.$this->grid->id.'"]="' . $this->buildActionUrl() . '";
         jQuery(".'. $this->getViewDivClass() . '").live("click", function(e){
             phaACOpenEditField(this, "' . $this->id . '");
             return false;
@@ -75,6 +81,7 @@ class phaEditColumn extends phaAbsActiveColumn {
         $script ='
         var phaACOpenEditItem = 0;
         var phaACOpenEditGrid = "";
+        var phaACActionUrls = [];
         function phaACOpenEditField(itemValue, gridUID, grid ) {
             phaACHideEditField( phaACOpenEditItem, phaACOpenEditGrid );
             var id   = $(itemValue).attr("valueid");
@@ -113,7 +120,7 @@ class phaEditColumn extends phaAbsActiveColumn {
                 type: "POST",
                 dataType: "json",
                 cache: false,
-                url: "' . $this->buildActionUrl() . '",
+                url: phaACActionUrls[id],
                 data: {
                     item: phaACOpenEditItem,
                     value: $("#field-"+phaACOpenEditGrid+"-"+phaACOpenEditItem+" input").val()
