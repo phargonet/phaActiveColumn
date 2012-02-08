@@ -109,7 +109,6 @@ class phaEditColumn extends phaAbsActiveColumn {
         }
         function phaACEditFieldSend( itemValue ) {
             var id = $(itemValue).parents(".grid-view").attr("id");
-
             $.ajax({
                 type: "POST",
                 dataType: "json",
@@ -117,7 +116,7 @@ class phaEditColumn extends phaAbsActiveColumn {
                 url: "' . $this->buildActionUrl() . '",
                 data: {
                     item: phaACOpenEditItem,
-                    value: $("#' .$this->name. '_"+phaACOpenEditItem).val()
+                    value: $("#field-"+phaACOpenEditGrid+"-"+phaACOpenEditItem+" input").val()
                 },
                 success: function(data){
                   $("#"+id).yiiGridView.update( id );
