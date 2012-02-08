@@ -65,45 +65,51 @@ class phaEditColumn extends phaAbsActiveColumn {
         parent::init();
 
         $cs=Yii::app()->getClientScript();
-        $gridId = $this->grid->getId();
+
+        $liveClick ='
+        jQuery(".'. $this->getViewDivClass() . '").live("click", function(e){
+            phaACOpenEditField(this, "' . $this->id . '");
+            return false;
+        });';
 
         $script ='
-        jQuery(".'.$this->getViewDivClass().'").live("click", function(e){
-            phaACOpenEditField(this);
-            return false;
-        });
-        var phaACOpenEditItem=0;
-        function phaACOpenEditField(itemValue) {
-            phaACHideEditField( phaACOpenEditItem );
-            var id=$(itemValue).attr("valueid");
+        var phaACOpenEditItem = 0;
+        var phaACOpenEditGrid = "";
+        function phaACOpenEditField(itemValue, gridUID, grid ) {
+            phaACHideEditField( phaACOpenEditItem, phaACOpenEditGrid );
+            var id   = $(itemValue).attr("valueid");
 
-            $("#'.$this->getViewDivClass().'-"+id).hide();
-            $("#' .$this->getFieldDivClass(). '"+id).show();
-            $("#' .$this->getFieldDivClass(). '"+id+" input")
+            $("#viewValue-" + gridUID + "-"+id).hide();
+            $("#field-" + gridUID + "-" + id).show();
+            $("#field-" + gridUID + "-" + id+" input")
                 .focus()
                 .keydown(function(event) {
                     switch (event.keyCode) {
                        case 27:
-                          phaACHideEditField(phaACOpenEditItem);
+                          phaACHideEditField( phaACOpenEditItem, gridUID );
                        break;
                        case 13:
-                          phaACEditFieldSend();
+                          phaACEditFieldSend( itemValue );
                        break;
                        default: break;
                     }
                 });
 
             phaACOpenEditItem = id;
+            phaACOpenEditGrid = gridUID;
         }
-        function phaACHideEditField(itemId) {
-            var clearVal = $("#'.$this->getViewDivClass().'-"+itemId).text();
-            $("#' .$this->getFieldDivClass(). '"+itemId+" input").val( clearVal );
-            $("#' .$this->getFieldDivClass(). '"+itemId).hide();
-            $("#' .$this->getFieldDivClass(). '"+itemId+" input").unbind("keydown");
-            $("#'.$this->getViewDivClass().'-"+itemId).show();
+        function phaACHideEditField( itemId, gridUID ) {
+            var clearVal = $("#viewValue-" + gridUID + "-"+itemId).text();
+            $("#field-" + gridUID + "-" + itemId+" input").val( clearVal );
+            $("#field-" + gridUID + "-" + itemId).hide();
+            $("#field-" + gridUID + "-" + itemId+" input").unbind("keydown");
+            $("#viewValue-" + gridUID + "-" + itemId).show();
             phaACOpenEditItem=0;
+            phaACOpenEditGrid = "";
         }
-        function phaACEditFieldSend() {
+        function phaACEditFieldSend( itemValue ) {
+            var id = $(itemValue).parents(".grid-view").attr("id");
+
             $.ajax({
                 type: "POST",
                 dataType: "json",
@@ -114,12 +120,13 @@ class phaEditColumn extends phaAbsActiveColumn {
                     value: $("#' .$this->name. '_"+phaACOpenEditItem).val()
                 },
                 success: function(data){
-                  $("#'.$gridId.'").yiiGridView.update("'.$gridId.'");
+                  $("#"+id).yiiGridView.update( id );
                 }
             });
         }
         ';
 
-        $cs->registerScript(__CLASS__.$gridId.'#active_column-'.$this->id, $script);
+        $cs->registerScript(__CLASS__.'#active_column-edit', $script);
+        $cs->registerScript(__CLASS__.$this->grid->id.'#active_column_click-'.$this->id, $liveClick);
     }
 }
